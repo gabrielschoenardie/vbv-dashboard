@@ -1,6 +1,6 @@
 # 🎬 VBV Dashboard — Hollywood Edition
 
-[![CI/CD Pipeline](https://github.com/SEU_USUARIO/vbv-dashboard/actions/workflows/build.yml/badge.svg)](https://github.com/SEU_USUARIO/vbv-dashboard/actions/workflows/build.yml)
+[![CI/CD Pipeline](https://github.com/gabrielschoenardie/vbv-dashboard/actions/workflows/build.yml/badge.svg)](https://github.com/gabrielschoenardie/vbv-dashboard/workflows/build.yml)
 [![React](https://img.shields.io/badge/React-19.2-61DAFB?logo=react)](https://react.dev)
 [![Vite](https://img.shields.io/badge/Vite-7.2-646CFF?logo=vite)](https://vitejs.dev)
 [![License](https://img.shields.io/badge/license-MIT-green)](LICENSE)
@@ -32,7 +32,7 @@ Dashboard profissional para análise e validação de parâmetros VBV (Video Buf
 
 ```bash
 # Clone o repositório
-git clone https://github.com/SEU_USUARIO/vbv-dashboard.git
+git clone https://github.com/gabrielschoenardie/vbv-dashboard.git
 cd vbv-dashboard
 
 # Instale as dependências
@@ -152,9 +152,8 @@ Distribuído sob a licença MIT. Veja `LICENSE` para mais informações.
 
 ## 👨‍💻 Autor
 
-**Seu Nome**
-- GitHub: [@seu_usuario](https://github.com/seu_usuario)
-- LinkedIn: [Seu Nome](https://linkedin.com/in/seu-perfil)
+**Gabriel Schoenardie**
+- GitHub: [@gabrielschoenardie](https://github.com/gabrielschoenardie)
 
 ## 🙏 Agradecimentos
 
