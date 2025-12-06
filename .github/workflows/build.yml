@@ -1,0 +1,80 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    
+    strategy:
+      matrix:
+        node-version: [18.x, 20.x]
+    
+    steps:
+    - name: 📥 Checkout código
+      uses: actions/checkout@v4
+    
+    - name: 🔧 Setup Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ matrix.node-version }}
+        cache: 'npm'
+    
+    - name: 📦 Instalar dependências
+      run: npm ci
+    
+    - name: 🔨 Build do projeto
+      run: npm run build
+    
+    - name: 📊 Verificar tamanho do build
+      run: |
+        echo "📊 Tamanho do build:"
+        du -sh dist/
+    
+    - name: 🎯 Upload artifacts
+      if: matrix.node-version == '20.x'
+      uses: actions/upload-artifact@v4
+      with:
+        name: dist-build
+        path: dist/
+        retention-days: 7
+
+  deploy-preview:
+    needs: build
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request'
+    
+    steps:
+    - name: 📥 Download artifacts
+      uses: actions/download-artifact@v4
+      with:
+        name: dist-build
+        path: dist/
+    
+    - name: 🚀 Deploy to GitHub Pages (Preview)
+      run: |
+        echo "Deploy preview para PR #${{ github.event.pull_request.number }}"
+        # Adicionar deploy para Vercel/Netlify aqui
+
+  python-check:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: 📥 Checkout código
+      uses: actions/checkout@v4
+    
+    - name: 🐍 Setup Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.11'
+    
+    - name: 🧪 Testar vbv_checker.py
+      run: |
+        cd python
+        python vbv_checker.py --version
+        python vbv_checker.py --preset maximum --export test_output.json
+        echo "✅ Python script funcionando"
