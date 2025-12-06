@@ -1,0 +1,47 @@
+ npm create vite@latest . -- --template react
+│
+◇  Current directory is not empty. Please choose how to proceed:
+│
+◇  Select a framework:
+│  Vanilla
+│
+◇  Select a variant:
+│  JavaScript
+│
+◇  Use rolldown-vite (Experimental)?:
+│  No
+│
+◇  Install with npm and start now?
+│  No
+│
+◇  Scaffolding project in C:\Users\Gabriel\encoder\vbv_dashboard...
+│
+└  Done. Now run:
+
+npm install
+npm install recharts lucide-react
+npm install react-router-dom
+npm install @vitejs/plugin-react
+npm install -D tailwindcss@3 postcss autoprefixer
+npx tailwindcss init -p
+npm run dev
+
+
+Esta localhost página não pode ser encontrada
+Nenhuma página da Web foi encontrada para o endereço Web: http://localhost:5173/
+
+### Se algo falhar — comandos úteis ###
+
+Reiniciar servidor:
+npm run dev
+# ou Ctrl+C e rodar novamente
+
+
+Limpar cache node_modules (se estranho):
+rm -rf node_modules package-lock.json
+npm install
+
+
+Testar build (opcional):
+npm run build
+npm run preview

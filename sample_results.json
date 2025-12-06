@@ -1,0 +1,93 @@
+{
+  "meta": {
+    "version": "1.1.0",
+    "generator": "vbv_checker.py",
+    "timestamp": "2025-12-04T21:51:20.595180+00:00",
+    "preset_used": null
+  },
+  "params": {
+    "target": 10000,
+    "maxrate": 12000,
+    "bufsize": 20000,
+    "vbv_init": 0.9
+  },
+  "calculations": {
+    "buffer_inicial": 18000,
+    "ratio_bufsize_maxrate": 1.67,
+    "ratio_maxrate_target": 1.2,
+    "margem_inicial": 8000,
+    "headroom_percent": 20.0
+  },
+  "instagram_analysis": {
+    "buffer_drain_time_sec": 9.0,
+    "peak_absorption_sec": 0.17,
+    "recovery_time_sec": 1.25,
+    "headroom_vs_instagram": 4500,
+    "quality_margin_percent": 81.8,
+    "estimated_size_30s_mb": 37.5,
+    "estimated_size_60s_mb": 75.0,
+    "estimated_size_90s_mb": 112.5
+  },
+  "validations": [
+    {
+      "name": "Regra de Ouro (bufsize/maxrate)",
+      "status": "WARN",
+      "detail": "1.67x fora do ideal (1.2x-1.5x)",
+      "value": 1.67
+    },
+    {
+      "name": "Hierarquia (target < maxrate < bufsize)",
+      "status": "OK",
+      "detail": "10000 < 12000 < 20000",
+      "value": null
+    },
+    {
+      "name": "Headroom maxrate/target",
+      "status": "OK",
+      "detail": "+20.0% (ideal: 10-25%)",
+      "value": 20.0
+    },
+    {
+      "name": "VBV-Init",
+      "status": "OK",
+      "detail": "90% (recomendado: 80-90%)",
+      "value": 0.9
+    },
+    {
+      "name": "Margem Inicial",
+      "status": "OK",
+      "detail": "+8000 kbps de folga",
+      "value": 8000
+    },
+    {
+      "name": "Sustentação de Pico",
+      "status": "OK",
+      "detail": "9.0s de pico contínuo suportado",
+      "value": 9.0
+    },
+    {
+      "name": "Limite Instagram",
+      "status": "OK",
+      "detail": "12000 kbps ≤ 12000 kbps (seguro)",
+      "value": 12000
+    },
+    {
+      "name": "Margem vs Instagram",
+      "status": "OK",
+      "detail": "+82% acima do processing interno (5500 kbps)",
+      "value": 81.8
+    }
+  ],
+  "overall_status": "WARN",
+  "score": 94,
+  "x264_params": [
+    "bitrate=10000",
+    "vbv-maxrate=12000",
+    "vbv-bufsize=20000",
+    "vbv-init=0.9"
+  ],
+  "ffmpeg_command": {
+    "pass1": "-c:v libx264 -b:v 10000k -maxrate 12000k -bufsize 20000k -preset slow -pass 1 -f null /dev/null",
+    "pass2": "-c:v libx264 -b:v 10000k -maxrate 12000k -bufsize 20000k -preset slow -pass 2 output.mp4"
+  }
+}
