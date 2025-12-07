@@ -1,11 +1,11 @@
-import React from "react";
+import React from 'react';
 export default function MetricsGrid({ calc }) {
   const items = [
-    { label: "Buffer Inicial", value: calc.buffer_inicial + " kbps" },
-    { label: "Ratio bufsize/maxrate", value: calc.ratio_bufsize_maxrate + "x" },
-    { label: "Ratio maxrate/target", value: calc.ratio_maxrate_target + "x" },
-    { label: "Headroom", value: "+" + calc.headroom_percent + "%" },
-    { label: "Margem Inicial", value: "+" + calc.margem_inicial + " kbps" },
+    { label: 'Buffer Inicial', value: calc.buffer_inicial + ' kbps' },
+    { label: 'Ratio bufsize/maxrate', value: calc.ratio_bufsize_maxrate + 'x' },
+    { label: 'Ratio maxrate/target', value: calc.ratio_maxrate_target + 'x' },
+    { label: 'Headroom', value: '+' + calc.headroom_percent + '%' },
+    { label: 'Margem Inicial', value: '+' + calc.margem_inicial + ' kbps' },
   ];
 
   return (

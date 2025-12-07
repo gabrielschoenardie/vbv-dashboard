@@ -1,19 +1,11 @@
-import React from "react";
-import {
-  BarChart,
-  CartesianGrid,
-  XAxis,
-  YAxis,
-  Tooltip,
-  Bar,
-  ResponsiveContainer
-} from "recharts";
+import React from 'react';
+import { BarChart, CartesianGrid, XAxis, YAxis, Tooltip, Bar, ResponsiveContainer } from 'recharts';
 
 export default function InstagramBars({ ig }) {
   const data = [
-    { name: "30s", mb: ig.estimated_size_30s_mb },
-    { name: "60s", mb: ig.estimated_size_60s_mb },
-    { name: "90s", mb: ig.estimated_size_90s_mb },
+    { name: '30s', mb: ig.estimated_size_30s_mb },
+    { name: '60s', mb: ig.estimated_size_60s_mb },
+    { name: '90s', mb: ig.estimated_size_90s_mb },
   ];
 
   return (

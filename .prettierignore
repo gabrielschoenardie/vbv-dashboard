@@ -1,0 +1,36 @@
+# Dependencies
+node_modules
+package-lock.json
+yarn.lock
+
+# Production
+dist
+build
+
+# IDE
+.vscode
+.idea
+
+# Misc
+*.min.js
+*.min.css
+coverage
+*.log
+.DS_Store
+.env*
+
+# Python
+__pycache__
+*.pyc
+*.pyo
+*.pyd
+.Python
+venv/
+env/
+
+# Git
+.git
+.gitignore
+
+# Docs
+*.md
