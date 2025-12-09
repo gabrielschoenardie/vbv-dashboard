@@ -1,8 +1,8 @@
 # PROJECT STRUCTURE — Referência Permanente
-
 Esta é a estrutura oficial do projeto VBV Dashboard — Hollywood Edition.
 O assistente deve usar este arquivo como referência imutável.
 
+```
 📁 Raiz
 vbv-dashboard/
 │
@@ -50,3 +50,4 @@ vbv-dashboard/
 ├── README.md                     # Documentação principal
 ├── tailwind.config.js            # Tailwind config
 └── vite.config.js                # Vite config
+```
