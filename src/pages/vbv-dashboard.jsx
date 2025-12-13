@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import {
   BarChart,
   Bar,
@@ -25,6 +25,8 @@ import {
   Zap,
   FileJson,
   ChevronDown,
+  Trash2,
+  Save,
 } from 'lucide-react';
 
 // ══════════════════════════════════════════════════════════════════════════════
@@ -83,6 +85,48 @@ const SAMPLE_DATA = {
 };
 
 // ══════════════════════════════════════════════════════════════════════════════
+// LOCALSTORAGE HELPERS
+// ══════════════════════════════════════════════════════════════════════════════
+
+const STORAGE_KEY = 'vbv-dashboard-data';
+
+const loadFromLocalStorage = () => {
+  try {
+    const saved = localStorage.getItem(STORAGE_KEY);
+    if (saved) {
+      const parsed = JSON.parse(saved);
+      // Validate basic structure
+      if (parsed && parsed.params && parsed.validations) {
+        return parsed;
+      }
+    }
+  } catch (error) {
+    console.error('Error loading from localStorage:', error);
+  }
+  return null;
+};
+
+const saveToLocalStorage = (data) => {
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+    return true;
+  } catch (error) {
+    console.error('Error saving to localStorage:', error);
+    return false;
+  }
+};
+
+const clearLocalStorage = () => {
+  try {
+    localStorage.removeItem(STORAGE_KEY);
+    return true;
+  } catch (error) {
+    console.error('Error clearing localStorage:', error);
+    return false;
+  }
+};
+
+// ══════════════════════════════════════════════════════════════════════════════
 // COMPONENTS
 // ══════════════════════════════════════════════════════════════════════════════
 
@@ -119,7 +163,7 @@ const CopyButton = ({ text, label }) => {
   return (
     <button
       onClick={handleCopy}
-      className="flex items-center gap-2 px-3 py-1.5 bg-zinc-800 hover:bg-zinc-700 
+      className="flex items-center gap-2 px-3 py-1.5 bg-zinc-800 hover:bg-zinc-700
                  border border-zinc-700 rounded-lg text-xs font-medium transition-all
                  text-zinc-300 hover:text-white"
     >
@@ -130,6 +174,33 @@ const CopyButton = ({ text, label }) => {
       )}
       {copied ? 'Copiado!' : label}
     </button>
+  );
+};
+
+// Toast Notification Component
+const Toast = ({ message, type, show }) => {
+  const colors = {
+    success: 'bg-emerald-500/20 text-emerald-400 border-emerald-500/30',
+    error: 'bg-red-500/20 text-red-400 border-red-500/30',
+    info: 'bg-blue-500/20 text-blue-400 border-blue-500/30',
+  };
+
+  if (!show) return null;
+
+  return (
+    <div
+      className={`fixed bottom-6 right-6 px-4 py-3 rounded-lg border ${colors[type]}
+                    shadow-lg backdrop-blur-sm transition-all transform
+                    ${show ? 'translate-x-0 opacity-100' : 'translate-x-full opacity-0'}
+                    z-50`}
+    >
+      <div className="flex items-center gap-2">
+        {type === 'success' && <Check className="w-4 h-4" />}
+        {type === 'error' && <XCircle className="w-4 h-4" />}
+        {type === 'info' && <Save className="w-4 h-4" />}
+        <span className="text-sm font-medium">{message}</span>
+      </div>
+    </div>
   );
 };
 
@@ -226,10 +297,39 @@ const ScoreRing = ({ score, status }) => {
 // ══════════════════════════════════════════════════════════════════════════════
 
 export default function VBVDashboard() {
-  const [data, setData] = useState(SAMPLE_DATA);
+  // Load initial data from localStorage or use SAMPLE_DATA
+  const [data, setData] = useState(() => {
+    const savedData = loadFromLocalStorage();
+    return savedData || SAMPLE_DATA;
+  });
+
   const [jsonInput, setJsonInput] = useState('');
   const [showInput, setShowInput] = useState(false);
   const [parseError, setParseError] = useState('');
+  const [hasStoredData, setHasStoredData] = useState(false);
+  const [toast, setToast] = useState({ show: false, message: '', type: 'success' });
+
+  // Check if there's stored data on mount
+  useEffect(() => {
+    setHasStoredData(!!loadFromLocalStorage());
+  }, []);
+
+  // Save data to localStorage whenever it changes (except initial load)
+  useEffect(() => {
+    const isNotSampleData = JSON.stringify(data) !== JSON.stringify(SAMPLE_DATA);
+    if (isNotSampleData) {
+      const saved = saveToLocalStorage(data);
+      if (saved) {
+        setHasStoredData(true);
+        showToast('Dados salvos automaticamente', 'success');
+      }
+    }
+  }, [data]);
+
+  const showToast = (message, type = 'success') => {
+    setToast({ show: true, message, type });
+    setTimeout(() => setToast({ show: false, message: '', type: 'success' }), 3000);
+  };
 
   const loadJson = useCallback(() => {
     try {
@@ -240,10 +340,26 @@ export default function VBVDashboard() {
       setData(parsed);
       setParseError('');
       setShowInput(false);
+      setJsonInput('');
+      showToast('JSON carregado com sucesso', 'success');
     } catch (e) {
       setParseError(e.message);
+      showToast('Erro ao carregar JSON', 'error');
     }
   }, [jsonInput]);
+
+  const handleClearStorage = () => {
+    if (window.confirm('Tem certeza que deseja limpar os dados salvos?')) {
+      const cleared = clearLocalStorage();
+      if (cleared) {
+        setData(SAMPLE_DATA);
+        setHasStoredData(false);
+        showToast('Dados salvos foram limpos', 'info');
+      } else {
+        showToast('Erro ao limpar dados', 'error');
+      }
+    }
+  };
 
   // Prepare chart data
   const bitrateData = [
@@ -275,6 +391,9 @@ export default function VBVDashboard() {
       className="min-h-screen bg-zinc-950 text-white p-6"
       style={{ fontFamily: "'JetBrains Mono', 'SF Mono', monospace" }}
     >
+      {/* Toast Notification */}
+      <Toast {...toast} />
+
       {/* Header */}
       <div className="max-w-7xl mx-auto">
         <div className="flex items-center justify-between mb-8">
@@ -286,18 +405,37 @@ export default function VBVDashboard() {
               <h1 className="text-2xl font-bold tracking-tight">VBV Dashboard</h1>
               <p className="text-zinc-500 text-sm">Instagram Reels Validator</p>
             </div>
+            {hasStoredData && (
+              <div className="flex items-center gap-1 px-2 py-1 bg-emerald-500/20 border border-emerald-500/30 rounded-md">
+                <Save className="w-3 h-3 text-emerald-400" />
+                <span className="text-xs text-emerald-400 font-medium">Dados Salvos</span>
+              </div>
+            )}
           </div>
-          <button
-            onClick={() => setShowInput(!showInput)}
-            className="flex items-center gap-2 px-4 py-2 bg-zinc-800 hover:bg-zinc-700 
-                       border border-zinc-700 rounded-lg text-sm font-medium transition-all"
-          >
-            <FileJson className="w-4 h-4" />
-            Carregar JSON
-            <ChevronDown
-              className={`w-4 h-4 transition-transform ${showInput ? 'rotate-180' : ''}`}
-            />
-          </button>
+          <div className="flex items-center gap-2">
+            {hasStoredData && (
+              <button
+                onClick={handleClearStorage}
+                className="flex items-center gap-2 px-4 py-2 bg-red-900/20 hover:bg-red-900/30
+                         border border-red-700/30 rounded-lg text-sm font-medium transition-all
+                         text-red-400 hover:text-red-300"
+              >
+                <Trash2 className="w-4 h-4" />
+                Limpar Dados Salvos
+              </button>
+            )}
+            <button
+              onClick={() => setShowInput(!showInput)}
+              className="flex items-center gap-2 px-4 py-2 bg-zinc-800 hover:bg-zinc-700
+                         border border-zinc-700 rounded-lg text-sm font-medium transition-all"
+            >
+              <FileJson className="w-4 h-4" />
+              Carregar JSON
+              <ChevronDown
+                className={`w-4 h-4 transition-transform ${showInput ? 'rotate-180' : ''}`}
+              />
+            </button>
+          </div>
         </div>
 
         {/* JSON Input Panel */}
@@ -307,7 +445,7 @@ export default function VBVDashboard() {
               value={jsonInput}
               onChange={(e) => setJsonInput(e.target.value)}
               placeholder="Cole o JSON exportado pelo vbv_checker.py aqui..."
-              className="w-full h-32 bg-zinc-950 border border-zinc-800 rounded-lg p-3 
+              className="w-full h-32 bg-zinc-950 border border-zinc-800 rounded-lg p-3
                          text-sm text-zinc-300 placeholder-zinc-600 resize-none
                          focus:outline-none focus:border-emerald-500/50"
             />
@@ -315,7 +453,7 @@ export default function VBVDashboard() {
             <div className="flex gap-2 mt-3">
               <button
                 onClick={loadJson}
-                className="px-4 py-2 bg-emerald-600 hover:bg-emerald-500 rounded-lg 
+                className="px-4 py-2 bg-emerald-600 hover:bg-emerald-500 rounded-lg
                            text-sm font-medium transition-all"
               >
                 Carregar
@@ -324,8 +462,10 @@ export default function VBVDashboard() {
                 onClick={() => {
                   setData(SAMPLE_DATA);
                   setShowInput(false);
+                  setJsonInput('');
+                  showToast('Exemplo carregado', 'info');
                 }}
-                className="px-4 py-2 bg-zinc-700 hover:bg-zinc-600 rounded-lg 
+                className="px-4 py-2 bg-zinc-700 hover:bg-zinc-600 rounded-lg
                            text-sm font-medium transition-all"
               >
                 Usar Exemplo
@@ -650,6 +790,7 @@ export default function VBVDashboard() {
         {/* Footer */}
         <div className="mt-6 text-center text-zinc-600 text-xs">
           VBV Checker v{data.meta.version} • {new Date(data.meta.timestamp).toLocaleString('pt-BR')}
+          {hasStoredData && <span className="ml-2">• Dados salvos localmente</span>}
         </div>
       </div>
     </div>
