@@ -12,7 +12,15 @@ Decisões técnicas:
 - vite.config.js com @vitejs/plugin-react para transformar JSX no build.
 
 Tarefas imediatas:
-1. Automatizar import JSON -> salvar última análise no localStorage (persistência).
+1. ✅ Automatizar import JSON → salvar última análise no localStorage (persistência) - CONCLUÍDO
 2. Exportar relatórios em HTML/PDF.
 3. Integrar um endpoint local (express) opcional para receber results.json via POST.
 4. Criar CI (GitHub Actions) para build/test.
+
+Implementações recentes:
+- [2025-12-15] localStorage para persistência de dados VBV
+  - Salvamento automático ao carregar JSON
+  - Carregamento automático na inicialização
+  - UI: Toast notifications + Badge "Dados Salvos" + Botão "Limpar"
+  - Validação de dados antes de salvar/carregar
+  - Fallback para SAMPLE_DATA se localStorage vazio/corrompido

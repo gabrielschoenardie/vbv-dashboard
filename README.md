@@ -24,7 +24,7 @@ Dashboard profissional para análise e validação de parâmetros VBV (Video Buf
 
 ### Pré-requisitos
 
-- Node.js 18+ 
+- Node.js 18+
 - npm ou yarn
 - Python 3.9+ (para o vbv_checker.py)
 
@@ -108,6 +108,25 @@ npm run preview      # Preview do build
 python python/vbv_checker.py --preset maximum
 python python/vbv_checker.py --preset safe --export results.json
 ```
+## 💾 Persistência de Dados
+
+O dashboard salva automaticamente os dados VBV no navegador usando **localStorage**.
+
+### Funcionamento
+- ✅ Ao carregar um JSON customizado, os dados são salvos automaticamente
+- ✅ Os dados permanecem após recarregar a página (F5)
+- ✅ Badge "Dados Salvos" indica que há dados persistidos
+- ✅ Botão "Limpar Dados Salvos" restaura dados de exemplo
+
+### Limitações
+- Dados são salvos apenas no navegador atual
+- Trocar de navegador = dados não aparecem
+- Limpar cache do navegador = dados são perdidos
+
+### Uso
+1. Carregar JSON → Dados salvos automaticamente
+2. Recarregar página → Dados permanecem
+3. Limpar dados → Volta para exemplo padrão
 
 ## 📊 Usando o VBV Checker
 
