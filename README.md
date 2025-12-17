@@ -19,6 +19,7 @@ Dashboard profissional para análise e validação de parâmetros VBV (Video Buf
 - 🔧 **Parâmetros x264** otimizados
 - 📦 **Presets Profissionais** (Maximum Quality / Safe Premium)
 - 🌙 **Tema Dark** cinematográfico
+- 💾 **Persistência Local** com localStorage
 
 ## 🚀 Quick Start
 
@@ -43,6 +44,28 @@ npm run dev
 ```
 
 Acesse http://localhost:5173
+
+## 🎯 Metodologia de Desenvolvimento
+
+Este projeto segue a **Metodologia Gabriel** com workflow Git profissional obrigatório.
+
+### Processo em 5 Etapas
+1. **Análise** - Entender requisito
+2. **Planejamento** - Definir impacto
+3. **Implementação** - Codificar com precisão
+4. **Validação** - Testar exaustivamente
+5. **Documentação** - Atualizar README + DEV_NOTES
+
+### Workflow Git Obrigatório
+- Todo desenvolvimento em branch `feature/` ou `fix/`
+- Testes obrigatórios antes de commit (`npm run dev`)
+- Commits estruturados (conventional commits + emoji)
+- Pull Request com template completo
+- Documentação sempre atualizada
+
+**📖 Ver processo completo:** [`WORKFLOW.md`](WORKFLOW.md)
+**✅ Template de validação:** [`CHECKLIST.md`](CHECKLIST.md)
+**📝 Notas de desenvolvimento:** [`DEV_NOTES.md`](DEV_NOTES.md)
 
 ## 📁 Estrutura do Projeto
 
@@ -80,6 +103,9 @@ vbv-dashboard/
 ├── examples/
 │   └── sample_results.json       # JSON de exemplo
 │
+├── WORKFLOW.md                   # Processo Git obrigatório
+├── CHECKLIST.md                  # Template de validação
+├── DEV_NOTES.md                  # Notas de desenvolvimento
 ├── .editorconfig                 # Configuração editor
 ├── .gitignore                    # Arquivos ignorados
 ├── .nvmrc                        # Node version (20.11.0)
@@ -108,6 +134,7 @@ npm run preview      # Preview do build
 python python/vbv_checker.py --preset maximum
 python python/vbv_checker.py --preset safe --export results.json
 ```
+
 ## 💾 Persistência de Dados
 
 O dashboard salva automaticamente os dados VBV no navegador usando **localStorage**.
@@ -124,9 +151,9 @@ O dashboard salva automaticamente os dados VBV no navegador usando **localStorag
 - Limpar cache do navegador = dados são perdidos
 
 ### Uso
-1. Carregar JSON → Dados salvos automaticamente
-2. Recarregar página → Dados permanecem
-3. Limpar dados → Volta para exemplo padrão
+1. **Carregar JSON** → Dados salvos automaticamente
+2. **Recarregar página** → Dados permanecem
+3. **Limpar dados** → Volta para exemplo padrão
 
 ## 📊 Usando o VBV Checker
 
@@ -163,15 +190,25 @@ python python/vbv_checker.py --recommend 25
 
 ## 🤝 Contribuindo
 
+Este projeto segue um **workflow Git profissional obrigatório**.
+
+### Processo Rápido
 1. Fork o projeto
-2. Crie sua feature branch (`git checkout -b feature/AmazingFeature`)
-3. Commit suas mudanças (`git commit -m 'Add: Amazing Feature'`)
-4. Push para a branch (`git push origin feature/AmazingFeature`)
-5. Abra um Pull Request
+2. Leia [`WORKFLOW.md`](WORKFLOW.md) para entender o processo completo
+3. Crie branch `feature/nome-da-feature`
+4. Implemente seguindo as **5 etapas da Metodologia Gabriel**
+5. Teste com `npm run dev`
+6. Commit estruturado com emoji (ex: `✨ feat: descrição`)
+7. Abra Pull Request usando o template
+8. Aguarde revisão e merge
+
+**📖 Processo detalhado:** [`WORKFLOW.md`](WORKFLOW.md)
+**✅ Checklist de validação:** [`CHECKLIST.md`](CHECKLIST.md)
 
 ## 📝 Roadmap
 
-- [ ] Persistência local (localStorage)
+- [x] ✅ Persistência local (localStorage) - **CONCLUÍDO**
+- [x] ✅ Metodologia de desenvolvimento estruturada - **CONCLUÍDO**
 - [ ] Export PDF dos relatórios
 - [ ] API endpoint para upload
 - [ ] Comparação entre múltiplos JSONs

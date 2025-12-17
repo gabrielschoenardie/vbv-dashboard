@@ -1,4 +1,5 @@
 # PROJECT STRUCTURE — Referência Permanente
+
 Esta é a estrutura oficial do projeto VBV Dashboard — Hollywood Edition.
 O assistente deve usar este arquivo como referência imutável.
 
@@ -38,6 +39,9 @@ vbv-dashboard/
 ├── 📁 examples/
 │   └── sample_results.json       # JSON de exemplo
 │
+├── WORKFLOW.md                   # Processo Git obrigatório (Metodologia Gabriel)
+├── CHECKLIST.md                  # Template de validação para features
+├── DEV_NOTES.md                  # Notas de desenvolvimento e histórico
 ├── .editorconfig                 # Configuração editor
 ├── .gitignore                    # Arquivos ignorados
 ├── .nvmrc                        # Node version (20.11.0)
@@ -51,3 +55,27 @@ vbv-dashboard/
 ├── tailwind.config.js            # Tailwind config
 └── vite.config.js                # Vite config
 ```
+
+## 📝 Descrição dos Novos Arquivos
+
+### WORKFLOW.md
+Documento obrigatório que define o processo Git profissional em 4 fases:
+- **FASE 1 (🧪):** Validação com testes A/B/C/D
+- **FASE 2 (⚙️):** Git workflow em 7 passos
+- **FASE 3 (📝):** Documentação (README + DEV_NOTES)
+- **FASE 4 (🧹):** Limpeza de branches
+
+### CHECKLIST.md
+Template reutilizável para validação de features com seções:
+- Testes Funcionais
+- Testes de Regressão
+- Git Workflow
+- Documentação
+- Limpeza
+
+### DEV_NOTES.md
+Histórico de implementações e decisões técnicas:
+- Metodologia de desenvolvimento
+- Contexto do projeto
+- Tarefas e roadmap
+- Implementações recentes
