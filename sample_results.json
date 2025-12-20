@@ -80,12 +80,7 @@
   ],
   "overall_status": "WARN",
   "score": 94,
-  "x264_params": [
-    "bitrate=10000",
-    "vbv-maxrate=12000",
-    "vbv-bufsize=20000",
-    "vbv-init=0.9"
-  ],
+  "x264_params": ["bitrate=10000", "vbv-maxrate=12000", "vbv-bufsize=20000", "vbv-init=0.9"],
   "ffmpeg_command": {
     "pass1": "-c:v libx264 -b:v 10000k -maxrate 12000k -bufsize 20000k -preset slow -pass 1 -f null /dev/null",
     "pass2": "-c:v libx264 -b:v 10000k -maxrate 12000k -bufsize 20000k -preset slow -pass 2 output.mp4"
