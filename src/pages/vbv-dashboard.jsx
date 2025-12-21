@@ -1,4 +1,5 @@
 import React, { useState, useCallback, useEffect } from 'react';
+import { toPng, toJpeg } from 'html-to-image';
 import {
   BarChart,
   Bar,
@@ -27,6 +28,7 @@ import {
   ChevronDown,
   Trash2,
   Save,
+  Camera,
 } from 'lucide-react';
 
 // ══════════════════════════════════════════════════════════════════════════════
@@ -308,6 +310,7 @@ export default function VBVDashboard() {
   const [parseError, setParseError] = useState('');
   const [hasStoredData, setHasStoredData] = useState(false);
   const [toast, setToast] = useState({ show: false, message: '', type: 'success' });
+  const [isExporting, setIsExporting] = useState(false);
 
   // Check if there's stored data on mount
   useEffect(() => {
@@ -361,6 +364,54 @@ export default function VBVDashboard() {
     }
   };
 
+  const exportSnapshot = async (quality = 'premium') => {
+    if (isExporting) return; // Prevent double-click
+
+    try {
+      setIsExporting(true);
+      showToast('Gerando snapshot...', 'info');
+
+      const element = document.getElementById('vbv-report-container');
+      if (!element) {
+        throw new Error('Container não encontrado');
+      }
+
+      // Configure quality options
+      const qualityValue = quality === 'ultra' ? 1.0 : quality === 'premium' ? 0.95 : 0.85;
+      const options = {
+        quality: qualityValue,
+        pixelRatio: 2, // Retina display
+        backgroundColor: '#0f172a', // Dark theme
+        cacheBust: true, // Force fresh render
+      };
+
+      // Wait for charts to render completely
+      await new Promise((resolve) => setTimeout(resolve, 300));
+
+      // Generate image
+      const dataUrl =
+        quality === 'ultra' ? await toPng(element, options) : await toJpeg(element, options);
+
+      // Create download link
+      const link = document.createElement('a');
+      const preset = data.meta.preset_used || 'custom';
+      const timestamp = Date.now();
+      const extension = quality === 'ultra' ? 'png' : 'jpg';
+      link.download = `VBV_Report_${preset}_${timestamp}.${extension}`;
+      link.href = dataUrl;
+      link.click();
+
+      showToast(
+        `Snapshot exportado com sucesso! (${quality === 'ultra' ? 'PNG' : 'JPG'} ${qualityValue * 100}%)`,
+        'success'
+      );
+    } catch (error) {
+      console.error('Export snapshot error:', error);
+      showToast('Erro ao exportar snapshot. Tente novamente.', 'error');
+    } finally {
+      setIsExporting(false);
+    }
+  };
   // Prepare chart data
   const bitrateData = [
     { name: 'Target', value: data.params.target, fill: '#3b82f6' },
@@ -388,6 +439,7 @@ export default function VBVDashboard() {
 
   return (
     <div
+      id="vbv-report-container"
       className="min-h-screen bg-zinc-950 text-white p-6"
       style={{ fontFamily: "'JetBrains Mono', 'SF Mono', monospace" }}
     >
@@ -413,6 +465,19 @@ export default function VBVDashboard() {
             )}
           </div>
           <div className="flex items-center gap-2">
+            <button
+              onClick={() => exportSnapshot('premium')}
+              disabled={isExporting}
+              className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all
+                         ${
+                           isExporting
+                             ? 'bg-zinc-800 border border-zinc-700 text-zinc-500 cursor-not-allowed'
+                             : 'bg-emerald-600 hover:bg-emerald-500 border border-emerald-700 text-white'
+                         }`}
+            >
+              <Camera className="w-4 h-4" />
+              {isExporting ? 'Exportando...' : '📸 Exportar JPG'}
+            </button>
             {hasStoredData && (
               <button
                 onClick={handleClearStorage}
