@@ -20,6 +20,7 @@ Dashboard profissional para análise e validação de parâmetros VBV (Video Buf
 - 📦 **Presets Profissionais** (Maximum Quality / Safe Premium)
 - 🌙 **Tema Dark** cinematográfico
 - 💾 **Persistência Local** com localStorage
+- 📸 **Export Snapshot JPG** Exportar análise como imagem de alta qualidade
 
 ## 🚀 Quick Start
 
@@ -209,7 +210,7 @@ Este projeto segue um **workflow Git profissional obrigatório**.
 
 - [x] ✅ Persistência local (localStorage) - **CONCLUÍDO**
 - [x] ✅ Metodologia de desenvolvimento estruturada - **CONCLUÍDO**
-- [ ] Export PDF dos relatórios
+- [x] ✅ Export JPG dos relatórios - **CONCLUÍDO**
 - [ ] API endpoint para upload
 - [ ] Comparação entre múltiplos JSONs
 - [ ] Modo claro/escuro

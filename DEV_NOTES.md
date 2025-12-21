@@ -52,6 +52,36 @@ Tarefas imediatas:
 
 ## 📋 Implementações Recentes
 
+### [2024-12-21] ✨ Export Snapshot JPG Premium
+
+**Funcionalidades implementadas:**
+- Exportação de análise VBV como imagem JPG/PNG de alta qualidade
+- Botão "📸 Exportar JPG" no header do dashboard (verde emerald)
+- Qualidade Premium (JPG 95%)
+- Resolução Retina (pixelRatio: 2) para imagens nítidas
+- Nome automático: VBV_Report_[preset]_[timestamp].jpg
+- Sistema de loading para prevenir múltiplos cliques (isExporting state)
+- Toast notifications para feedback (Gerando/Sucesso/Erro)
+- Timeout de 300ms para garantir renderização completa dos gráficos
+
+**Tecnologias:**
+- html-to-image (^1.11.13)
+- React Hooks: useState (isExporting)
+- Async/await para captura de imagem
+- DOM API (createElement, click) para download automático
+
+**Arquivos modificados:**
+- `src/pages/vbv-dashboard.jsx` (+62 linhas)
+- `package.json` (nova dependência)
+- `package-lock.json` (auto-gerado)
+
+**Status:** ✅ Testado e funcionando perfeitamente
+**Branch:** `feature/export-snapshot-jpg`
+**Commit:** ✨ feat: adicionar export de snapshot JPG premium
+**PR:** #2 (merged)
+
+---
+
 ### [2025-12-17] ✨ localStorage - Persistência de Dados VBV
 
 **Funcionalidades implementadas:**
